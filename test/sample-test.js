@@ -1,19 +1,30 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("NFTGramm", function () {
+  it("Should create and return nfts", async function () {
+     const Gramm = await ethers.getContractFactory("NFTGramm");
+     const gramm = await Gramm.deploy();
+     await gramm.deployed();
+     const grammAdress = gramm.address;
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+     const NFT = await ethers.getContractFactory("NFT");
+     const nft = await NFT.deploy(grammAdress);
+     await nft.deployed();
+     const nftContractAdress = nft.address;
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+     const id1 = await nft.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
+     const id2 = await nft.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+     await gramm.createImgItem(nftContractAdress, 1);
+     await gramm.createImgItem(nftContractAdress, 2);
+
+     await gramm.addLike(1);
+     // await gramm.addLike(1);
+
+     const items = await gramm.fetchMyNFTs();
+
+     console.log(items);
   });
 });
