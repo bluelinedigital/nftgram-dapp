@@ -1,63 +1,65 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import 'hardhat/console.sol';
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import 'hardhat/console.sol';
 
-contract NFTGramm {
+contract NFTGramm is ERC721URIStorage {
     using Counters for Counters.Counter;
-    Counters.Counter private _imgIds;
+    Counters.Counter private  _tokenId;
     mapping(uint256 => ImgItem) public idToImgItem;
 
     struct ImgItem {
-        uint   imgId;
         address owner;
-        address nftContract;
         uint256 tokenId;
         address[] likes;
     }
 
     event ImgItemCreated (
-        uint  indexed  imgId,
-        address indexed nftContract,
         uint256 indexed tokenId,
         address owner,
         address[] likes
     );
 
-    function createImgItem (address nftContract, uint256 tokenId) public {
-        _imgIds.increment();
-        uint256 imgId = _imgIds.current();
+    constructor() ERC721("Metaverse Tokens", "METT") {}
 
-        idToImgItem[imgId] = ImgItem(
-            imgId,
+    function createToken(string memory tokenURI) public returns (uint) {
+        _tokenId.increment();
+        uint256 newItemId = _tokenId.current();
+
+        _mint(msg.sender, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+        createImgItem(newItemId);
+        return newItemId;
+    }
+
+    function createImgItem (uint256 tokenId) private {
+        idToImgItem[tokenId] = ImgItem(
             msg.sender,
-            nftContract,
             tokenId,
             new address[](0)
         );
 
         emit ImgItemCreated(
-            imgId,
-            nftContract,
             tokenId,
             msg.sender,
             new address[](0)
         );
     }
 
-    function addLike(uint imgId) public {
-        ImgItem storage item = idToImgItem[imgId];
+    function addLike(uint tokenId) public {
+        ImgItem storage item = idToImgItem[tokenId];
 
         require(CheckIfLiked(item.likes), "You have already liked this image");
 
         item.likes.push(msg.sender);
-        idToImgItem[imgId] = item;
+        idToImgItem[tokenId] = item;
     }
 
     function fetchMyNFTs() public view returns(ImgItem[] memory) {
-        uint totalItems = _imgIds.current();
+        uint totalItems = _tokenId.current();
         uint itemCount = 0;
         uint curretIndex = 0;
 
@@ -70,7 +72,7 @@ contract NFTGramm {
         ImgItem[] memory items = new ImgItem[](itemCount);
         for (uint i = 0; i < totalItems; i++) {
             if(idToImgItem[i + 1].owner == msg.sender) {
-                uint currendId = idToImgItem[i + 1].imgId;
+                uint currendId = idToImgItem[i + 1].tokenId;
                 ImgItem storage currentItem = idToImgItem[currendId];
                 items[curretIndex] = currentItem;
                 curretIndex++;

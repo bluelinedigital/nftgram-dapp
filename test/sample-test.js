@@ -3,27 +3,29 @@ const { ethers } = require("hardhat");
 
 describe("NFTGramm", function () {
   it("Should create and return nfts", async function () {
-     const Gramm = await ethers.getContractFactory("NFTGramm");
-     const gramm = await Gramm.deploy();
-     await gramm.deployed();
-     const grammAdress = gramm.address;
+     const NFTGramm = await ethers.getContractFactory("NFTGramm");
+     const nftGramm = await NFTGramm.deploy();
+     await nftGramm.deployed();
 
-     const NFT = await ethers.getContractFactory("NFT");
-     const nft = await NFT.deploy(grammAdress);
-     await nft.deployed();
-     const nftContractAdress = nft.address;
+     await nftGramm.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
+     await nftGramm.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
 
-     const id1 = await nft.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
-     const id2 = await nft.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
+     const [_, otherUser] = await ethers.getSigners();
 
+     await nftGramm.addLike(1);
+     await nftGramm.connect(otherUser).addLike(1);
 
-     await gramm.createImgItem(nftContractAdress, 1);
-     await gramm.createImgItem(nftContractAdress, 2);
+     let items = await nftGramm.fetchMyNFTs();
 
-     await gramm.addLike(1);
-     // await gramm.addLike(1);
-
-     const items = await gramm.fetchMyNFTs();
+     items = await Promise.all(items.map(async i => {
+        const tokenUri = await nftGramm.tokenURI(i.tokenId)
+        return {
+           tokenId: i.tokenId.toNumber(),
+           owner: i.owner,
+           tokenUri,
+           likes: i.likes,
+        }
+     }));
 
      console.log(items);
   });
