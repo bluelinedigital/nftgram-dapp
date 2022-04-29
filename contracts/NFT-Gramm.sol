@@ -51,11 +51,15 @@ contract NFTGramm is ERC721URIStorage {
 
     function addLike(uint tokenId) public {
         ImgItem storage item = idToImgItem[tokenId];
+        int index = checkIfLiked(item.likes);
 
-        require(CheckIfLiked(item.likes), "You have already liked this image");
-
-        item.likes.push(msg.sender);
-        idToImgItem[tokenId] = item;
+        if(index == -1) {
+            item.likes.push(msg.sender);
+            idToImgItem[tokenId] = item;
+        } else {
+            item.likes[uint(index)] = item.likes[item.likes.length - 1];
+            item.likes.pop();
+        }
     }
 
     function fetchMyNFTs() public view returns(ImgItem[] memory) {
@@ -82,13 +86,13 @@ contract NFTGramm is ERC721URIStorage {
         return items;
     }
 
-    function CheckIfLiked(address[] memory _likes) private view returns(bool) {
+    function checkIfLiked(address[] memory _likes) private view returns(int) {
         for(uint i = 0; i < _likes.length; i++) {
             if(_likes[i] == msg.sender) {
-                return false;
+                return int(i);
             }
         }
 
-        return true;
+        return -1;
     }
 }

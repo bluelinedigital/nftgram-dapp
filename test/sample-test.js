@@ -10,10 +10,13 @@ describe("NFTGramm", function () {
      await nftGramm.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
      await nftGramm.createToken("https://dev-app.usekyleapp.com/hiphoprap.jpg");
 
-     const [_, otherUser] = await ethers.getSigners();
+     const [_, secondUser, thirdUser] = await ethers.getSigners();
 
      await nftGramm.addLike(1);
-     await nftGramm.connect(otherUser).addLike(1);
+     await nftGramm.connect(secondUser).addLike(1);
+     await nftGramm.connect(thirdUser).addLike(1);
+     await nftGramm.addLike(1);
+     await nftGramm.addLike(2);
 
      let items = await nftGramm.fetchMyNFTs();
 
