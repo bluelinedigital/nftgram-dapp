@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
-import { loader } from "../services/loader/loader";
 
 export default function Profile() {
   const [nfts, setNfts] = useState([]);
@@ -51,6 +50,10 @@ export default function Profile() {
     );
     setNfts(items);
     setLoadingState("loaded");
+  }
+
+  function loader({ src, width, quality }) {
+    return `${src}?w=${width}&q=${quality || 75}`;
   }
 
   if (loadingState === "loaded" && !nfts.length)
