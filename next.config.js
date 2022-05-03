@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  trailingSlash: true,
   images: {
     loader: "akamai",
-    path: "https://nftgramm.com",
+    path: "/",
     domains: ["ipfs.infura.io"],
   },
 };
