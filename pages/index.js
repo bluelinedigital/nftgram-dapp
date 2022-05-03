@@ -10,9 +10,9 @@ import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 export default function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
-  useEffect(() => {
-    loadNFTs();
-  }, []);
+  // useEffect(() => {
+  //   loadNFTs();
+  // }, []);
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
     const provider = new ethers.providers.JsonRpcProvider();

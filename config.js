@@ -1,1 +1,3 @@
-export const nftGramm = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+  export const nftGramm = "0x5Da4505dfF572FbE16dF1DD507351C223E007804"
+  
