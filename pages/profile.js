@@ -1,5 +1,5 @@
 import Image from "next/image";
-import cat from "./assets/icons/cat.jpeg";
+import cat from "../public/cat.jpeg";
 
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
