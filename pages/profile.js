@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
+import { loader } from "./assets/loader/loader";
 
 export default function Profile() {
   const [nfts, setNfts] = useState([]);
@@ -58,7 +59,13 @@ export default function Profile() {
     <div className="sm:container max-w-5xl px-8 pt-8">
       <div className="flex w-full pb-20">
         <span className="basis-2/6 flex justify-center">
-          <Image className="rounded-full" width={150} height={150} src={cat} />
+          <Image
+            loader={loader}
+            className="rounded-full"
+            width={150}
+            height={150}
+            src={cat}
+          />
         </span>
         <span className="basis-4/6">
           <div>
@@ -72,7 +79,12 @@ export default function Profile() {
             (nft, i) =>
               nft?.image && (
                 <span key={i}>
-                  <Image src={nft?.image} width={290} height={290} />
+                  <Image
+                    loader={loader}
+                    src={nft?.image}
+                    width={290}
+                    height={290}
+                  />
                 </span>
               )
           )}
