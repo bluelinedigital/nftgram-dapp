@@ -7,7 +7,6 @@ import Link from "next/link";
 import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
-import Link from "next/link";
 
 export default function Home() {
   const [nfts, setNfts] = useState([]);

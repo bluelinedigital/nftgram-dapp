@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
+import Link from "next/link";
 
 export default function Profile() {
   const [nfts, setNfts] = useState([]);
