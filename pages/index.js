@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
+import Link from "next/link";
 
 export default function Home() {
   const [nfts, setNfts] = useState([]);
@@ -35,19 +36,35 @@ export default function Home() {
     setLoadingState("loaded");
   }
 
-  if (loadingState === "loaded" && !nfts.length)
-    return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>;
+  // if (loadingState === "loaded" && !nfts.length)
   return (
-    <div className="flex justify-center">
-      <div className="px-4" style={{ maxWidth: "1600px" }}>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-          {nfts.map((nft, i) => (
-            <div key={i} className="border shadow rounded-xl overflow-hidden">
-              <img src={nft.image} />
-            </div>
-          ))}
-        </div>
-      </div>
+    <div>
+      <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
+      <ul>
+        <li>
+          <Link href="/profile">
+            <a>Your profile</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/create-item">
+            <a>Create nft</a>
+          </Link>
+        </li>
+      </ul>
     </div>
   );
+  // return (
+  //   <div className="flex justify-center">
+  //     <div className="px-4" style={{ maxWidth: "1600px" }}>
+  //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
+  //         {nfts.map((nft, i) => (
+  //           <div key={i} className="border shadow rounded-xl overflow-hidden">
+  //             <img src={nft.image} />
+  //           </div>
+  //         ))}
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
 }

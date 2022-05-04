@@ -52,12 +52,32 @@ export default function Profile() {
     setLoadingState("loaded");
   }
 
+  async function addLike(like) {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    let contract = new ethers.Contract(nftGramm, NFTGramm.abi, signer);
+    let transaction = await contract.addLike(like);
+    await transaction.wait();
+
+    router.push("/profile");
+  }
+
   function loader({ src, width, quality }) {
     return `${src}?w=${width}&q=${quality || 75}`;
   }
 
   if (loadingState === "loaded" && !nfts.length)
-    return <h1 className="py-10 px-20 text-3xl">No NFTs owned </h1>;
+    return (
+      <div>
+        <h1 className="py-10 px-20 text-3xl">No NFTs owned </h1>
+        <Link href="/create-item">
+          <a>Create nft</a>
+        </Link>
+      </div>
+    );
   return (
     <div className="sm:container max-w-5xl px-8 pt-8">
       <div className="flex w-full pb-20">
@@ -81,13 +101,14 @@ export default function Profile() {
           {nfts.map(
             (nft, i) =>
               nft?.image && (
-                <span key={i}>
+                <span className="flex flex-col" key={i}>
                   <Image
                     loader={loader}
                     src={nft?.image}
                     width={290}
                     height={290}
                   />
+                  <button onClick={() => addLike(nft?.tokenId)}>Like</button>
                 </span>
               )
           )}
