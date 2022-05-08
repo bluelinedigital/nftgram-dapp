@@ -11,6 +11,7 @@ import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 import Link from "next/link";
+import Header from "../components/Header";
 
 export default function Profile() {
   const [nfts, setNfts] = useState([]);
@@ -80,39 +81,38 @@ export default function Profile() {
       </div>
     );
   return (
-    <div className="sm:container max-w-5xl px-8 pt-8">
-      <div className="flex w-full pb-20">
-        <span className="basis-2/6 flex justify-center">
-          <Image
-            loader={loader}
-            className="rounded-full"
-            width={150}
-            height={150}
-            src={cat}
-          />
-        </span>
-        <span className="basis-4/6">
-          <div>
-            <span>Nickname</span>
+    <div className="sm:container max-w-5xl">
+      <Header />
+      <div className="flex">
+        <div className="flex flex-col flex-1">
+          <div className="flex justify-center">
+            <Image
+              loader={loader}
+              className="rounded-full"
+              width={150}
+              height={150}
+              src={cat}
+            />
           </div>
-        </span>
-      </div>
-      <div className="flex w-full">
-        <div className="grid grid-cols-3 gap-7">
-          {nfts.map(
-            (nft, i) =>
-              nft?.image && (
-                <span className="flex flex-col" key={i}>
-                  <Image
-                    loader={loader}
-                    src={nft?.image}
-                    width={290}
-                    height={290}
-                  />
-                  <button onClick={() => addLike(nft?.tokenId)}>Like</button>
-                </span>
-              )
-          )}
+          <button className="border rounded-sm py-2">Follow</button>
+        </div>
+        <div className="flex flex-5">
+          <div className="grid grid-cols-3 gap-7">
+            {nfts.map(
+              (nft, i) =>
+                nft?.image && (
+                  <span className="flex flex-col" key={i}>
+                    <Image
+                      loader={loader}
+                      src={nft?.image}
+                      width={350}
+                      height={350}
+                    />
+                    <button onClick={() => addLike(nft?.tokenId)}>Like</button>
+                  </span>
+                )
+            )}
+          </div>
         </div>
       </div>
     </div>
