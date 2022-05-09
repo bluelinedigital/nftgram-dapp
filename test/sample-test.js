@@ -28,6 +28,7 @@ describe("NFTGramm and SubContract", function () {
      await nftGramm.addLike(1);
      await nftGramm.connect(secondUser).addLike(1);
      await nftGramm.connect(thirdUser).addLike(1);
+     await nftGramm.connect(thirdUser).addLike(1);
      await nftGramm.addLike(1);
      await nftGramm.addLike(2);
 
@@ -44,7 +45,7 @@ describe("NFTGramm and SubContract", function () {
         likes: avatar.likes,
      }).then((av) => av);
 
-     let items = await nftGramm.fetchMyNFTs();
+     let items = await nftGramm.fetchMyNFTs(firstUser.address);
 
      items = await Promise.all(items.map(async i => {
         const tokenUri = await nftGramm.tokenURI(i.tokenId)
