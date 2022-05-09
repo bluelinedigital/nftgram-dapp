@@ -11,9 +11,55 @@ import { nftGramm } from "../config";
 
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 import Link from "next/link";
-import Header from "../components/Header";
 
-export default function Profile() {
+const mock = [
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+  {
+    image:
+      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
+  },
+];
+
+const Profile = () => {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
   const router = useRouter();
@@ -81,40 +127,39 @@ export default function Profile() {
       </div>
     );
   return (
-    <div className="sm:container max-w-5xl">
-      <Header />
-      <div className="flex">
-        <div className="flex flex-col flex-1">
-          <div className="flex justify-center">
-            <Image
-              loader={loader}
-              className="rounded-full"
-              width={150}
-              height={150}
-              src={cat}
-            />
-          </div>
-          <button className="border rounded-sm py-2">Follow</button>
+    <div className="flex">
+      <div className="flex flex-col pr-12">
+        <div className="flex justify-center px-14 mb-10">
+          <Image
+            loader={loader}
+            className="rounded-full"
+            width={120}
+            height={120}
+            src={cat}
+          />
         </div>
-        <div className="flex flex-5">
-          <div className="grid grid-cols-3 gap-7">
-            {nfts.map(
-              (nft, i) =>
-                nft?.image && (
-                  <span className="flex flex-col" key={i}>
-                    <Image
-                      loader={loader}
-                      src={nft?.image}
-                      width={350}
-                      height={350}
-                    />
-                    <button onClick={() => addLike(nft?.tokenId)}>Like</button>
-                  </span>
-                )
-            )}
-          </div>
+        <button className="border rounded-sm py-2">Follow</button>
+      </div>
+      <div className="flex ">
+        <div className="grid grid-cols-3 gap-7 flex-wrap">
+          {mock.map(
+            (nft, i) =>
+              nft?.image && (
+                <span className="flex flex-col" key={i}>
+                  <Image
+                    loader={loader}
+                    src={nft?.image}
+                    width={300}
+                    height={300}
+                  />
+                  <button onClick={() => addLike(nft?.tokenId)}>Like</button>
+                </span>
+              )
+          )}
         </div>
       </div>
     </div>
   );
-}
+};
+
+export default Profile;
