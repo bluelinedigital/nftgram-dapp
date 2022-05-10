@@ -62,20 +62,20 @@ contract NFTGramm is ERC721URIStorage {
         }
     }
 
-    function fetchMyNFTs() public view returns(ImgItem[] memory) {
+    function fetchMyNFTs(address owner) public view returns(ImgItem[] memory) {
         uint totalItems = _tokenId.current();
         uint itemCount = 0;
         uint curretIndex = 0;
 
         for (uint i = 0; i < totalItems; i++) {
-            if(idToImgItem[i + 1].owner == msg.sender) {
+            if(idToImgItem[i + 1].owner == owner) {
                 itemCount++;
             }
         }
 
         ImgItem[] memory items = new ImgItem[](itemCount);
         for (uint i = 0; i < totalItems; i++) {
-            if(idToImgItem[i + 1].owner == msg.sender) {
+            if(idToImgItem[i + 1].owner == owner) {
                 uint currendId = idToImgItem[i + 1].tokenId;
                 ImgItem storage currentItem = idToImgItem[currendId];
                 items[curretIndex] = currentItem;
@@ -89,6 +89,17 @@ contract NFTGramm is ERC721URIStorage {
     function fetchAvatar(uint tokenId) public view returns(ImgItem memory) {
         ImgItem storage avatar = idToImgItem[tokenId];
         return avatar;
+    }
+
+    function fetchAllNFTs() public view returns(ImgItem[] memory) {
+        uint totalItems = _tokenId.current();
+        ImgItem[] memory items = new ImgItem[](totalItems);
+
+        for (uint i = 0; i < totalItems; i++) {
+            items[i] = idToImgItem[i + 1];
+        }
+
+        return items;
     }
 
     function _checkIfLiked(address[] memory _likes) private view returns(int) {
