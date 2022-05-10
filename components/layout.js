@@ -10,9 +10,9 @@ export default function Layout({ children }) {
     setShowing(!isShowing);
   };
   return (
-    <div className="lg:container lg:mx-auto relative">
+    <div className="relative">
       <Header openModal={toggleModal} />
-      <main>{children}</main>
+      <main className="lg:container lg:mx-auto">{children}</main>
       <CreateItemModal isShowing={isShowing} hide={toggleModal} />
       <CreateButton onClick={toggleModal} />
     </div>

@@ -142,7 +142,7 @@ const Profile = () => {
       </div>
       <div className="flex ">
         <div className="grid grid-cols-3 gap-7 flex-wrap">
-          {mock.map(
+          {nfts.map(
             (nft, i) =>
               nft?.image && (
                 <span className="flex flex-col" key={i}>

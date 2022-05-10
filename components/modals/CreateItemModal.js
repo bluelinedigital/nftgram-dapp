@@ -1,9 +1,9 @@
 import { Modal } from "@mantine/core";
-import Dropzone from "../Dropzone";
+import DropzoneField from "../DropzoneField";
 
 const CreateItemModal = ({ isShowing, hide }) => (
   <Modal opened={isShowing} onClose={hide}>
-    <Dropzone />
+    <DropzoneField />
   </Modal>
 );
 

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useState } from "react";
 import {
   Text,
   Group,
@@ -7,8 +8,16 @@ import {
   MantineTheme,
   useMantineTheme,
 } from "@mantine/core";
-import { Dropzone, DropzoneStatus, MIME_TYPES } from "@mantine/dropzone";
+import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import { CloudUpload } from "tabler-icons-react";
+import { ethers } from "ethers";
+import { useRouter } from "next/router";
+import Web3Modal from "web3modal";
+import { create } from "ipfs-http-client";
+
+import { nftGramm } from "../../config";
+
+import NFTGramm from "../../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -51,15 +60,59 @@ const DropzoneField = () => {
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const openRef = useRef();
+  const [fileUrl, setFileUrl] = useState(null);
+  const router = useRouter();
+  const client = create("https://ipfs.infura.io:5001/api/v0");
+
+  async function onChange(files) {
+    const file = files[0];
+    try {
+      const added = await client.add(file, {
+        progress: (prog) => console.log(`received: ${prog}`),
+      });
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      setFileUrl(url);
+      listNFTForSale();
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
+  async function uploadToIPFS() {
+    const data = JSON.stringify({
+      image: fileUrl,
+    });
+    try {
+      const added = await client.add(data);
+      const url = `https://ipfs.infura.io/ipfs/${added.path}`;
+      return url;
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
+
+  async function listNFTForSale() {
+    const url = await uploadToIPFS();
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    let contract = new ethers.Contract(nftGramm, NFTGramm.abi, signer);
+    let transaction = await contract.createToken(url);
+    await transaction.wait();
+
+    router.push("/profile");
+  }
 
   return (
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={() => {}}
+        onDrop={(files) => onChange(files)}
+        onReject={(files) => console.log("rejected files", files)}
         className={classes.dropzone}
         radius="md"
-        accept={[MIME_TYPES.pdf]}
+        accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
         maxSize={30 * 1024 ** 2}
       >
         {(status) => (
@@ -77,12 +130,12 @@ const DropzoneField = () => {
               {status.accepted
                 ? "Drop files here"
                 : status.rejected
-                ? "Pdf file less than 30mb"
+                ? "Image file less than 30mb"
                 : "Upload resume"}
             </Text>
             <Text align="center" size="sm" mt="xs" color="dimmed">
               Drag&apos;n&apos;drop files here to upload. We can accept only{" "}
-              <i>.pdf</i> files that are less than 30mb in size.
+              <i>.png/.jpeg</i> files that are less than 30mb in size.
             </Text>
           </div>
         )}

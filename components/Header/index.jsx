@@ -17,8 +17,8 @@ const Header = ({ openModal }) => {
   }
 
   return (
-    <div className="flex justify-between pt-12 mb-12">
-      <span>NFT-Gramm</span>
+    <div className="flex justify-between pt-12 mb-12 px-20">
+      <span className="text-xl -mr-16">NFT-Gramm</span>
       <span className="flex gap-x-10 items-center">
         <Link href={"/"}>
           <HomeImage className="cursor-pointer" />
