@@ -80,7 +80,10 @@ const Profile = () => {
       NFTGramm.abi,
       signer
     );
-    const data = await marketplaceContract.fetchMyNFTs();
+
+    const address = marketplaceContract.address;
+    console.log(address);
+    const data = await marketplaceContract.fetchMyNFTs(address);
 
     const items = await Promise.all(
       data.map(async (i) => {

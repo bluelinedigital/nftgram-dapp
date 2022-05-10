@@ -3,7 +3,7 @@ import DropzoneField from "../DropzoneField";
 
 const CreateItemModal = ({ isShowing, hide }) => (
   <Modal opened={isShowing} onClose={hide}>
-    <DropzoneField />
+    <DropzoneField modalClose={hide} />
   </Modal>
 );
 

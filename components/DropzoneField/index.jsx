@@ -56,7 +56,7 @@ function getActiveColor(status, theme) {
     : theme.black;
 }
 
-const DropzoneField = () => {
+const DropzoneField = ({ modalClose }) => {
   const theme = useMantineTheme();
   const { classes } = useStyles();
   const openRef = useRef();
@@ -101,7 +101,7 @@ const DropzoneField = () => {
     let transaction = await contract.createToken(url);
     await transaction.wait();
 
-    router.push("/profile");
+    modalClose();
   }
 
   return (

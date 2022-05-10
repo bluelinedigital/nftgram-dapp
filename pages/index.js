@@ -4,18 +4,16 @@ import axios from "axios";
 import Web3Modal from "web3modal";
 import cat from "../public/cat.jpeg";
 import LikeImage from "../public/like.svg";
-
-import { nftGramm } from "../config";
-
-import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 import Image from "next/image";
+import { nftGramm } from "../config";
+import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 
 export default function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
-  // useEffect(() => {
-  //   loadNFTs();
-  // }, []);
+  useEffect(() => {
+    loadNFTs();
+  }, []);
 
   const mock = [
     {
@@ -69,10 +67,11 @@ export default function Home() {
   }
 
   async function loadNFTs() {
-    /* create a generic provider and query for unsold market items */
-    const provider = new ethers.providers.JsonRpcProvider();
+    const provider = new ethers.providers.JsonRpcProvider(
+      "https://mainnet.infura.io/v3/c4b43a0d4c23428f91737196af1489cf"
+    );
     const contract = new ethers.Contract(nftGramm, NFTGramm.abi, provider);
-    const data = await contract.fetchMyNFTs();
+    const data = await contract.fetchAllNFTs();
 
     const items = await Promise.all(
       data.map(async (i) => {
@@ -90,24 +89,8 @@ export default function Home() {
     setLoadingState("loaded");
   }
 
-  // if (loadingState === "loaded" && !nfts.length)
-  // return (
-  //   <div>
-  //     <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>
-  //     <ul>
-  //       <li>
-  //         <Link href="/profile">
-  //           <a>Your profile</a>
-  //         </Link>
-  //       </li>
-  //       <li>
-  //         <Link href="/create-item">
-  //           <a>Create nft</a>
-  //         </Link>
-  //       </li>
-  //     </ul>
-  //   </div>
-  // );
+  if (loadingState === "loaded" && !nfts.length)
+    return <h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>;
   return (
     <div className="flex justify-center">
       <div className="px-4" style={{ maxWidth: "1600px" }}>
