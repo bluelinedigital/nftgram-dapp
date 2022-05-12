@@ -3,6 +3,7 @@ require("@nomiclabs/hardhat-waffle");
 
 const fs = require("fs");
 const privateKey = fs.readFileSync(".secret").toString();
+const infuraId = fs.readFileSync(".infuraid").toString().trim() || "";
 
 module.exports = {
   defaultNetwork: "hardhat",
@@ -12,11 +13,11 @@ module.exports = {
     },
     //  unused configuration commented out for now
     mumbai: {
-      url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,
+      url: `https://polygon-mumbai.infura.io/v3/${infuraId}`,
       accounts: [privateKey],
     },
     mainnet: {
-      url: `https://polygon-mumbai.infura.io/v3/${process.env.PROJECT_ID}`,
+      url: `https://polygon-mumbai.infura.io/v3/${infuraId}`,
       accounts: [privateKey],
     },
   },
