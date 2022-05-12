@@ -33,7 +33,7 @@ export default function CreateItem() {
   }
   async function uploadToIPFS() {
     // const { name, description, price } = formInput;
-    // if (!name || !description || !price || !fileUrl) return;
+    if (!fileUrl) return;
     /* first, upload to IPFS */
     const data = JSON.stringify({
       //   name,
@@ -71,11 +71,21 @@ export default function CreateItem() {
   return (
     <div className="flex justify-center">
       <div className="w-1/2 flex flex-col pb-12">
-        <input type="file" name="Asset" className="my-4" onChange={onChange} />
-        {fileUrl && <img className="rounded mt-4" width="350" src={fileUrl} />}
+        {/* <input type="file" name="Asset" className="my-4" onChange={onChange} /> */}
+        <div class="flex justify-center">
+          <div class="mb-3 w-96">
+            <input
+              onChange={onChange}
+              class="form-control blockw-full px-2 py-1.5 text-xl font-normal text-white bg-black bg-clip-padding border border-solid border-white rounded transition ease-in-out m-0 focus:text-black focus:bg-white focus:border-white focus:outline-none"
+              id="formFileLg"
+              type="file"
+            />
+          </div>
+        </div>
+        {fileUrl && <img className="rounded mt-4" width="100%" src={fileUrl} />}
         <button
           onClick={listNFTForSale}
-          className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg"
+          className="font-bold mt-4 bg-white text-xl text-black rounded p-4 shadow-lg"
         >
           Create NFT
         </button>

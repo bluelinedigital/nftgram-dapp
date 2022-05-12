@@ -4,17 +4,17 @@ import Header from "./Header";
 import CreateItemModal from "./modals/CreateItemModal";
 
 export default function Layout({ children }) {
-  const [isShowing, setShowing] = useState(false);
+  // const [isShowing, setShowing] = useState(false);
 
-  const toggleModal = () => {
-    setShowing(!isShowing);
-  };
+  // const toggleModal = () => {
+  //   setShowing(!isShowing);
+  // };
   return (
     <div className="relative">
-      <Header openModal={toggleModal} />
+      <Header />
       <main className="lg:container lg:mx-auto">{children}</main>
-      <CreateItemModal isShowing={isShowing} hide={toggleModal} />
-      <CreateButton onClick={toggleModal} />
+      {/* <CreateItemModal isShowing={isShowing} hide={toggleModal} /> */}
+      <CreateButton />
     </div>
   );
 }

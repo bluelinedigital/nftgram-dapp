@@ -1,74 +1,25 @@
 import Image from "next/image";
 import cat from "../public/cat.jpeg";
-
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Web3Modal from "web3modal";
 import { useRouter } from "next/router";
-
 import { nftGramm } from "../config";
-
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
-import Link from "next/link";
-
-const mock = [
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-  {
-    image:
-      "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-  },
-];
 
 const Profile = () => {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
   const router = useRouter();
+
   useEffect(() => {
     loadNFTs();
   }, []);
+
   async function loadNFTs() {
     const web3Modal = new Web3Modal({
-      network: "mainnet",
+      network: "mumbai",
       cacheProvider: true,
     });
     const connection = await web3Modal.connect();
@@ -81,10 +32,10 @@ const Profile = () => {
       signer
     );
 
-    const address = marketplaceContract.address;
-    console.log(address);
+    const address = router.query?.address
+      ? router.query?.address
+      : await signer.getAddress();
     const data = await marketplaceContract.fetchMyNFTs(address);
-
     const items = await Promise.all(
       data.map(async (i) => {
         const tokenURI = await marketplaceContract.tokenURI(i.tokenId);
@@ -100,6 +51,7 @@ const Profile = () => {
       })
     );
     setNfts(items);
+    console.log(items);
     setLoadingState("loaded");
   }
 
@@ -120,15 +72,6 @@ const Profile = () => {
     return `${src}?w=${width}&q=${quality || 75}`;
   }
 
-  if (loadingState === "loaded" && !nfts.length)
-    return (
-      <div>
-        <h1 className="py-10 px-20 text-3xl">No NFTs owned </h1>
-        <Link href="/create-item">
-          <a>Create nft</a>
-        </Link>
-      </div>
-    );
   return (
     <div className="flex">
       <div className="flex flex-col pr-12">
@@ -144,22 +87,26 @@ const Profile = () => {
         <button className="border rounded-sm py-2">Follow</button>
       </div>
       <div className="flex ">
-        <div className="grid grid-cols-3 gap-7 flex-wrap">
-          {nfts.map(
-            (nft, i) =>
-              nft?.image && (
-                <span className="flex flex-col" key={i}>
-                  <Image
-                    loader={loader}
-                    src={nft?.image}
-                    width={300}
-                    height={300}
-                  />
-                  <button onClick={() => addLike(nft?.tokenId)}>Like</button>
-                </span>
-              )
-          )}
-        </div>
+        {loadingState === "loaded" && nfts.length ? (
+          <div className="grid grid-cols-3 gap-7 flex-wrap">
+            {nfts.map(
+              (nft, i) =>
+                nft?.image && (
+                  <span className="flex flex-col" key={i}>
+                    <Image
+                      loader={loader}
+                      src={nft?.image}
+                      width={300}
+                      height={300}
+                    />
+                    <button onClick={() => addLike(nft?.tokenId)}>Like</button>
+                  </span>
+                )
+            )}
+          </div>
+        ) : (
+          <h1 className="py-10 px-20 text-3xl">No NFTs owned </h1>
+        )}
       </div>
     </div>
   );

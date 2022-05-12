@@ -7,10 +7,13 @@ import LikeImage from "../public/like.svg";
 import Image from "next/image";
 import { nftGramm } from "../config";
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
+import { useRouter } from "next/router";
 
 export default function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
+  const router = useRouter();
+
   useEffect(() => {
     loadNFTs();
   }, []);
@@ -68,7 +71,7 @@ export default function Home() {
 
   async function loadNFTs() {
     const provider = new ethers.providers.JsonRpcProvider(
-      "https://mainnet.infura.io/v3/c4b43a0d4c23428f91737196af1489cf"
+      "https://polygon-mumbai.infura.io/v3/c4b43a0d4c23428f91737196af1489cf"
     );
     const contract = new ethers.Contract(nftGramm, NFTGramm.abi, provider);
     const data = await contract.fetchAllNFTs();
@@ -86,6 +89,7 @@ export default function Home() {
       })
     );
     setNfts(items);
+    console.log(items);
     setLoadingState("loaded");
   }
 
@@ -103,19 +107,27 @@ export default function Home() {
                 width={600}
                 height={600}
               />
-              <div className="flex justify-between px-6 py-3">
+              <div className="flex justify-between px-6 py-3 items-center">
                 <span className="flex items-center">
                   <Image
+                    onClick={() => {
+                      router.push({
+                        pathname: "/profile",
+                        query: { address: nft?.owner },
+                      });
+                    }}
                     loader={loader}
                     className="rounded-full cursor-pointer"
                     width={34}
                     height={34}
                     src={cat}
                   />
-                  <span className="pl-6">Bored Ape Yacht Club</span>
+                  <span className="pl-6 text-ellipsis overflow-hidden">
+                    {nft?.owner}
+                  </span>
                 </span>
                 <span className="flex gap-4">
-                  <span>100 likes</span>
+                  <span className="whitespace-nowrap">100 likes</span>
                   <LikeImage />
                 </span>
               </div>

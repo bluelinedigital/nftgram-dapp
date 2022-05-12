@@ -19,6 +19,8 @@ import { nftGramm } from "../../config";
 
 import NFTGramm from "../../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
 
+const client = create("https://ipfs.infura.io:5001/api/v0");
+
 const useStyles = createStyles((theme) => ({
   wrapper: {
     position: "relative",
@@ -62,22 +64,22 @@ const DropzoneField = ({ modalClose }) => {
   const openRef = useRef();
   const [fileUrl, setFileUrl] = useState(null);
   const router = useRouter();
-  const client = create("https://ipfs.infura.io:5001/api/v0");
 
-  async function onChange(files) {
-    const file = files[0];
+  async function onChange(e) {
+    const file = e.target.files[0];
+    console.log(file);
     try {
       const added = await client.add(file, {
         progress: (prog) => console.log(`received: ${prog}`),
       });
       const url = `https://ipfs.infura.io/ipfs/${added.path}`;
-      setFileUrl(url);
-      listNFTForSale();
+      listNFTForSale(url);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
   }
-  async function uploadToIPFS() {
+  async function uploadToIPFS(fileUrl) {
+    if (!fileUrl) return;
     const data = JSON.stringify({
       image: fileUrl,
     });
@@ -90,14 +92,16 @@ const DropzoneField = ({ modalClose }) => {
     }
   }
 
-  async function listNFTForSale() {
-    const url = await uploadToIPFS();
+  async function listNFTForSale(fileUrl) {
+    const url = await uploadToIPFS(fileUrl);
+    console.log(url);
     const web3Modal = new Web3Modal();
     const connection = await web3Modal.connect();
     const provider = new ethers.providers.Web3Provider(connection);
     const signer = provider.getSigner();
 
     let contract = new ethers.Contract(nftGramm, NFTGramm.abi, signer);
+    console.log(url);
     let transaction = await contract.createToken(url);
     await transaction.wait();
 
@@ -108,12 +112,14 @@ const DropzoneField = ({ modalClose }) => {
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={(files) => onChange(files)}
+        onDrop={() => {}}
         onReject={(files) => console.log("rejected files", files)}
+        onChange={onChange}
         className={classes.dropzone}
         radius="md"
         accept={[MIME_TYPES.png, MIME_TYPES.jpeg]}
         maxSize={30 * 1024 ** 2}
+        multiple
       >
         {(status) => (
           <div style={{ pointerEvents: "none" }}>

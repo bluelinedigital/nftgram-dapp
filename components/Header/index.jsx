@@ -11,7 +11,7 @@ const navButtons = [
   { src: HomeImage, url: "/" },
 ];
 
-const Header = ({ openModal }) => {
+const Header = () => {
   function loader({ src, width, quality }) {
     return `${src}?w=${width}&q=${quality || 75}`;
   }
