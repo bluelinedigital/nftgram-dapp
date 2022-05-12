@@ -184,6 +184,7 @@ const Profile = () => {
             <div className="flex flex-col gap-1 cursor-pointer">
               {followers.map((f) => (
                 <span
+                  key={f}
                   onClick={() => {
                     router.push({
                       pathname: "/profile",
