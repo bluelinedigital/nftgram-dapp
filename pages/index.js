@@ -89,7 +89,6 @@ export default function Home() {
       })
     );
     setNfts(items);
-    console.log(items);
     setLoadingState("loaded");
   }
 
