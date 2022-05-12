@@ -72,11 +72,11 @@ export default function CreateItem() {
     <div className="flex justify-center">
       <div className="w-1/2 flex flex-col pb-12">
         {/* <input type="file" name="Asset" className="my-4" onChange={onChange} /> */}
-        <div class="flex justify-center">
-          <div class="mb-3 w-96">
+        <div className="flex justify-center">
+          <div className="mb-3 w-96">
             <input
               onChange={onChange}
-              class="form-control blockw-full px-2 py-1.5 text-xl font-normal text-white bg-black bg-clip-padding border border-solid border-white rounded transition ease-in-out m-0 focus:text-black focus:bg-white focus:border-white focus:outline-none"
+              className="form-control blockw-full px-2 py-1.5 text-xl font-normal text-white bg-black bg-clip-padding border border-solid border-white rounded transition ease-in-out m-0 focus:text-black focus:bg-white focus:border-white focus:outline-none"
               id="formFileLg"
               type="file"
             />
