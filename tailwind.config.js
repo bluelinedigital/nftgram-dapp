@@ -8,11 +8,11 @@ module.exports = {
     container: {
       center: true,
       screens: {
-        sm: "600px",
-        md: "728px",
-        lg: "984px",
+        sm: "1240px",
+        md: "1240px",
+        lg: "1240px",
         xl: "1240px",
-        "2xl": "1496px",
+        "2xl": "1240px",
       },
     },
   },
