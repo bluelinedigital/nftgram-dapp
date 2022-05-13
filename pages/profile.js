@@ -105,7 +105,10 @@ const Profile = () => {
       signer
     );
 
-    const data = await marketplaceContract.fetchMySubs();
+    const address = router.query?.address
+      ? router.query?.address
+      : await signer.getAddress();
+    const data = await marketplaceContract.fetchMySubs(address);
 
     setFollowers(data[1]);
     setLoadingState("loaded");

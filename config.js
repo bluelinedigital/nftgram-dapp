@@ -1,4 +1,4 @@
 
-  export const nftGramm = "0xC0F89F1A7044D7FC182Fa3F3434BECA4528D9e63"
-  export const subContract = "0x4Ae842395Ed14ed38B068f87b13297f6A941112d"
+  export const nftGramm = "0xe1546598aa5f0394f9ff7AcA4063519a3946c6Fa"
+  export const subContract = "0x2485C7bb2c4aBB55ba256AFcBabD5f16F76C37dB"
   

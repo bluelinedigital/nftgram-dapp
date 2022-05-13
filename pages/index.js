@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Web3Modal from "web3modal";
 import cat from "../public/cat.jpeg";
-import LikeImage from "../public/like.svg";
+import LikeImage from "../public/like1.svg";
+import LikedImage from "../public/like2.svg";
 import Image from "next/image";
 import { nftGramm } from "../config";
 import NFTGramm from "../artifacts/contracts/NFT-Gramm.sol/NFTGramm.json";
@@ -12,61 +13,43 @@ import { useRouter } from "next/router";
 export default function Home() {
   const [nfts, setNfts] = useState([]);
   const [loadingState, setLoadingState] = useState("not-loaded");
+  const [address, setAddress] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
+    getAddress();
     loadNFTs();
   }, []);
 
-  const mock = [
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-    {
-      image:
-        "https://bafybeiakwr57wcvrj5jmj2ljp5ed25iwnwnaucvks2z4mcog27qmh2qtfq.ipfs.infura-ipfs.io/",
-    },
-  ];
-
   function loader({ src, width, quality }) {
     return `${src}?w=${width}&q=${quality || 75}`;
+  }
+
+  async function addLike(like) {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    let contract = new ethers.Contract(nftGramm, NFTGramm.abi, signer);
+    let transaction = await contract.addLike(like);
+    await transaction.wait();
+  }
+
+  async function getAddress() {
+    const web3Modal = new Web3Modal({
+      network: "mumbai",
+      cacheProvider: true,
+    });
+    const connection = await web3Modal.connect();
+    const provider = new ethers.providers.Web3Provider(connection);
+    const signer = provider.getSigner();
+
+    const address = router.query?.address
+      ? router.query?.address
+      : await signer.getAddress();
+
+    setAddress(address);
   }
 
   async function loadNFTs() {
@@ -83,11 +66,13 @@ export default function Home() {
         let item = {
           tokenId: i.tokenId.toNumber(),
           owner: i.owner,
+          likes: i.likes,
           image: meta.data.image,
         };
         return item;
       })
     );
+    console.log(items);
     setNfts(items);
     setLoadingState("loaded");
   }
@@ -126,8 +111,16 @@ export default function Home() {
                   </span>
                 </span>
                 <span className="flex gap-4">
-                  <span className="whitespace-nowrap">100 likes</span>
-                  <LikeImage />
+                  <span className="whitespace-nowrap">
+                    {nft.likes?.length} likes
+                  </span>
+                  <button onClick={() => addLike(nft?.tokenId)}>
+                    {nft?.likes.find((e) => e === address && true) ? (
+                      <LikedImage />
+                    ) : (
+                      <LikeImage />
+                    )}
+                  </button>
                 </span>
               </div>
             </div>

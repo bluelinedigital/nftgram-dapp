@@ -35,8 +35,8 @@ contract SubContract {
         }
     }
 
-    function fetchMySubs() public view returns(Subscription memory) {
-        Subscription memory mySubs = addressToSubscription[msg.sender];
+    function fetchMySubs(address owner) public view returns(Subscription memory) {
+        Subscription memory mySubs = addressToSubscription[owner];
 
         return mySubs;
     }
