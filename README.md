@@ -55,17 +55,16 @@ This is NFTgramm created to create and post your nft`s, see other users nft's, s
 
 ### Documentation
 
-<img src="https://drive.google.com/file/d/1GXpBH_i5MZp7uqhuVeCb5v4P3ux4CsiY/view?usp=sharing" alt="">
+<img src="http://drive.google.com/uc?export=view&id=1GXpBH_i5MZp7uqhuVeCb5v4P3ux4CsiY" alt="">
+<br />
 
 Main page, here you can see other users nft's, go to the create-nft page clicking plus button in bottom right corner and go to your profile clicking your profile image in navigation bar.
-
-<img src="https://drive.google.com/file/d/1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV/view?usp=sharing" alt="">
-
-<div>
-![](https://drive.google.com/file/d/1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV/view?usp=sharing)
-
 <br />
+
+<img src="http://drive.google.com/uc?export=view&id=1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV" alt="">
+<br />
+
 Profile page, here you can see your created nft`s, followers and add like on your nft's
-</div>
+<br />
 
 Copyright 2022 ANODA, all rights reserved
