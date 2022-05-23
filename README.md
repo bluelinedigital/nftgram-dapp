@@ -61,6 +61,11 @@ Main page, here you can see other users nft's, go to the create-nft page clickin
 
 <img src="https://drive.google.com/file/d/1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV/view?usp=sharing" alt="">
 
+<div>
+![](https://drive.google.com/file/d/1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV/view?usp=sharing)
+
+<br />
 Profile page, here you can see your created nft`s, followers and add like on your nft's
+</div>
 
 Copyright 2022 ANODA, all rights reserved
