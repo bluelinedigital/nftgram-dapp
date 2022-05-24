@@ -1,7 +1,8 @@
 {
   "name": "nft-gramm",
-  "version": "0.1.0",
-  "private": true,
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT License",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
