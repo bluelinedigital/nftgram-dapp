@@ -55,13 +55,13 @@ This is NFTgramm created to create and post your nft`s, see other users nft's, s
 
 ### Documentation
 
-<img src="http://drive.google.com/uc?export=view&id=1GXpBH_i5MZp7uqhuVeCb5v4P3ux4CsiY" alt="">
+<img src="http://drive.google.com/uc?export=view&id=1GXpBH_i5MZp7uqhuVeCb5v4P3ux4CsiY" width="500px" alt="">
 <br />
 
 Main page, here you can see other users nft's, go to the create-nft page clicking plus button in bottom right corner and go to your profile clicking your profile image in navigation bar.
 <br />
 
-<img src="http://drive.google.com/uc?export=view&id=1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV" alt="">
+<img src="http://drive.google.com/uc?export=view&id=1umiW6gA4ZVIt1uTkL5i9SyimI3fvKuPV" width="500px" alt="">
 <br />
 
 Profile page, here you can see your created nft`s, followers and add like on your nft's
